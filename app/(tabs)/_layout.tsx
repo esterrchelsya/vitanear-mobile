@@ -1,35 +1,25 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { Tabs } from "expo-router";
+import CustomTabBar from "../../components/CustomTabBar";
+import { useLanguage } from "../../lib/LanguageContext";
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+export default function TabsLayout() {
+  const { t } = useLanguage();
 
   return (
     <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
+      screenOptions={{ headerShown: false }}
+      tabBar={(props) => (
+        <CustomTabBar {...(props as unknown as BottomTabBarProps)} />
+      )}
+    >
+      <Tabs.Screen name="home" options={{ title: t("tabs.home") }} />
+      <Tabs.Screen name="cari" options={{ title: t("tabs.search") }} />
       <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
+        name="transaksi"
+        options={{ title: t("tabs.transactions") }}
       />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
+      <Tabs.Screen name="profil" options={{ title: t("tabs.profile") }} />
     </Tabs>
   );
 }
